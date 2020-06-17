@@ -1,0 +1,32 @@
+{
+  "name": "koatest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint-fix": "eslint --ext .js ./ --fix",
+    "lint": "eslint --ext .js ./",
+    "build": "npx babel src --out-dir dist --source-maps true"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "koa": "^2.12.1",
+    "koa-body": "^4.2.0",
+    "koa-router": "^9.0.1",
+    "mongoose": "^5.9.18"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.1",
+    "@babel/core": "^7.10.2",
+    "@babel/preset-env": "^7.10.2",
+    "ajv": "^6.12.2",
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.21.2",
+    "mocha": "^8.0.1",
+    "sinon": "^9.0.2"
+  }
+}
