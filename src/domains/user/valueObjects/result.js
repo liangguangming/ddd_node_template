@@ -1,6 +1,5 @@
 class Result {
-  constructor(code, message = '', data, error) {
-    this.code = code;
+  constructor(error, message = '', data) {
     this.message = message;
     if (data) {
       this.data = data;
