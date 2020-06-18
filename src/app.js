@@ -1,29 +1,72 @@
-import Koa from 'koa';
-import koaBody from 'koa-body';
-import router from './routers/router';
+import MongoDB from './lib/db';
+import globalEventEmitter, { GLOBAL_EVENT } from './core/GloabelEventEmitter';
+import HTTPServer from './http/HttpServer';
 
-const app = new Koa();
+/**
+ * 0 初始状态
+ * 1 初始化进行中
+ * 2 初始化完成
+ */
+let state = 0;
 
-app.use(koaBody());
+let firstLaunch = false;
 
-// logger
-app.use(async (ctx, next) => {
-  await next();
-  const rt = ctx.response.get('X-Response-Time');
-  console.log(`${ctx.method} ${ctx.url} - ${rt}`);
-});
+class Application {
+  static get firstLaunch() {
+    return firstLaunch;
+  }
 
-// x-response-time
-app.use(async (ctx, next) => {
-  const start = Date.now();
-  await next();
-  const ms = Date.now() - start;
-  ctx.set('X-Response-Time', `${ms}ms`);
-});
+  static set firstLaunch(val) {
+    firstLaunch = val;
+  }
 
-app.use(router.routes());
-app.use(router.allowedMethods());
+  static get state() {
+    return state;
+  }
 
-app.listen(3000, () => {
-  console.log('launch successful');
-});
+  static get mongoState() {
+    return MongoDB.STATE;
+  }
+
+  static get httpServerState() {
+    return HTTPServer.STATE;
+  }
+
+  static initEvent() {
+    const launchEvent = {
+      name: GLOBAL_EVENT.LAUNCH,
+      handler: () => {
+        if (Application.firstLaunch) {
+          MongoDB.init();
+        }
+        globalEventEmitter.clearEvent(GLOBAL_EVENT.LAUNCH);
+      },
+    };
+    const mongoInitedEvent = {
+      name: GLOBAL_EVENT.MONGODB_INITED,
+      handler: () => {
+        if (Application.firstLaunch) {
+          HTTPServer.init();
+        }
+        globalEventEmitter.clearEvent(GLOBAL_EVENT.MONGODB_INITED);
+      },
+    };
+    const httpInitedEvent = {
+      name: GLOBAL_EVENT.HTTP_INITED,
+      handler: () => {
+        state = 2;
+      },
+    };
+    globalEventEmitter.addEvent(launchEvent);
+    globalEventEmitter.addEvent(mongoInitedEvent);
+    globalEventEmitter.addEvent(httpInitedEvent);
+  }
+
+  static launch() {
+    Application.initEvent();
+    globalEventEmitter.fireEvent({ name: GLOBAL_EVENT.LAUNCH });
+    state = 1;
+  }
+}
+
+Application.launch();

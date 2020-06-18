@@ -1,5 +1,5 @@
 import Router from 'koa-router';
-import userCli from '../domains/user/userCli';
+import userCli from '../../domains/user/userCli';
 
 const user = new Router();
 

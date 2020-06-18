@@ -35,6 +35,14 @@ class DomainEventEmitter {
       handler(event.data);
     });
   }
+
+  /**
+   * 清理事件
+   * @param {String} eventName 事件名
+   */
+  clearEvent(eventName) {
+    this.eventHandlerMap.delete(eventName);
+  }
 }
 
 export default DomainEventEmitter;
