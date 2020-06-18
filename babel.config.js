@@ -4,7 +4,6 @@ const presets = [
     {
       targets: {
         node: 'current',
-        esmodules: true,
       },
       useBuiltIns: 'usage',
     },
