@@ -46,12 +46,12 @@ class User extends DomainEventEmitter {
    * 用户信息
    * @param {{ name: String, age?: Number }} props 用户信息
    */
-  static createUser(props) {
+  static createUser(props = {}) {
     if (!props.name) {
       throw new UserCreateError('缺少名字: name');
     }
     const user = new User(props);
-    user.fireEvent(new CreateUserEvent(this.toValueObject()));
+    user.fireEvent(new CreateUserEvent(user.toValueObject()));
 
     return user;
   }

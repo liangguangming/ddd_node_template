@@ -3,6 +3,8 @@ import UserRepository from '../repositories/user';
 import User from '../entities/user';
 import Result from '../valueObjects/result';
 import UserParamError from '../errors/UserParamError';
+import UserCreateError from '../errors/UserCreateError';
+import ServerError from '../errors/ServerError';
 
 // 用例入口
 class UserController {
@@ -30,13 +32,18 @@ class UserController {
     let result;
     try {
       user = User.createUser(userProps);
+      user = await UserRepository.createUser(user.toValueObject());
+      EmailService.sendConfig(user);
+      result = new Result(null, '创建用户成功', user.toValueObject());
     } catch (error) {
-      result = new Result(error, '创建用户失败');
-      return result;
+      if (error instanceof UserCreateError) {
+        result = new Result(error, '创建用户失败');
+      } else {
+        console.error('server_error: \n', 'req: ', userProps, '\nerror: ', error);
+        result = new Result(new ServerError(), '创建用户失败');
+      }
     }
-    user = await UserRepository.createUser(user.toValueObject());
-    EmailService.sendConfig(user);
-    result = new Result(null, '创建用户成功', user.toValueObject());
+
     return result;
   }
 }

@@ -5,7 +5,11 @@ class Result {
       this.data = data;
     }
     if (error) {
-      this.error = error;
+      this.error = {
+        message: error.message,
+        code: error.code,
+        name: error.name,
+      };
     }
   }
 }
