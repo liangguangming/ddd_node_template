@@ -10,9 +10,9 @@ user.get('/:id', async (ctx) => {
 });
 
 user.post('/', async (ctx) => {
-  const userProps = ctx.body;
+  const userProps = ctx.request.body;
   const result = await userCli.user.createUser(userProps);
   ctx.body = result;
 });
 
-export default user.routes();
+module.exports = user.routes();

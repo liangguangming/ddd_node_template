@@ -1,7 +1,10 @@
 import Koa from 'koa';
+import koaBody from 'koa-body';
 import router from './routers/router';
 
 const app = new Koa();
+
+app.use(koaBody());
 
 // logger
 app.use(async (ctx, next) => {
