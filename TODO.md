@@ -1,2 +1,4 @@
 # TODO
-1. subDomain如何通信
+1. 单元测试
+2. logger
+3. nodemon
