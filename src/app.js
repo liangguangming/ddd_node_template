@@ -1,5 +1,5 @@
-import MongoDB from './lib/db';
-import globalEventEmitter, { GLOBAL_EVENT } from './core/GloabelEventEmitter';
+import MongoDB from './share/lib/db';
+import globalEventEmitter, { GLOBAL_EVENT } from './share/core/GloabelEventEmitter';
 import HTTPServer from './http/HttpServer';
 
 /**
@@ -9,7 +9,7 @@ import HTTPServer from './http/HttpServer';
  */
 let state = 0;
 
-let firstLaunch = false;
+let firstLaunch = true;
 
 class Application {
   static get firstLaunch() {
@@ -55,11 +55,30 @@ class Application {
       name: GLOBAL_EVENT.HTTP_INITED,
       handler: () => {
         state = 2;
+        firstLaunch = false;
       },
     };
     globalEventEmitter.addEvent(launchEvent);
     globalEventEmitter.addEvent(mongoInitedEvent);
     globalEventEmitter.addEvent(httpInitedEvent);
+  }
+
+  /**
+   * 获取应用的健康状态
+   */
+  static getHealthInfo() {
+    const mongoDBHealthInfo = MongoDB.getHealthInfo();
+    const httpServerHealthInfo = HTTPServer.getHealthInfo();
+    const result = {
+      health: mongoDBHealthInfo.health && httpServerHealthInfo.health && Application.state === 2,
+      stateInfo: {
+        state: Application.state,
+        mongoState: mongoDBHealthInfo.state,
+        httpServerState: httpServerHealthInfo.state,
+      },
+    };
+
+    return result;
   }
 
   static launch() {

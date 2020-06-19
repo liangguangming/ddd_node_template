@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import koaBody from 'koa-body';
 import router from './routers/router';
-import globalEventEmitter, { GLOBAL_EVENT } from '../core/GloabelEventEmitter';
+import globalEventEmitter, { GLOBAL_EVENT } from '../share/core/GloabelEventEmitter';
 
 const app = new Koa();
 
@@ -44,6 +44,18 @@ class HTTPServer {
       console.log('launch successful');
       globalEventEmitter.fireEvent({ name: GLOBAL_EVENT.HTTP_INITED });
     });
+  }
+
+  /**
+   * 获取http服务器健康状态
+   */
+  static getHealthInfo() {
+    const result = {
+      health: HTTPServer.STATE === 2,
+      state: HTTPServer.STATE,
+    };
+
+    return result;
   }
 }
 

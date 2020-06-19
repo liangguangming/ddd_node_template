@@ -1,4 +1,4 @@
-import UserController from './controllers/userController';
+import UserController from './useCases/userController';
 
 export default {
   user: UserController,

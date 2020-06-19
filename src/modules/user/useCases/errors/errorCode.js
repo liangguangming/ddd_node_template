@@ -1,7 +1,7 @@
-const RESULT_CODE = {
+const ERROR_CODE = {
   USER_PARAM_ERROR: 1001, // 用户参数错误
   USER_CREATE_ERROR: 1002, // 创建用户失败
-  SERVER_ERROR: 5000, // 服务器错误
+  USER_NOTFOUND_ERROR: 1003, // 未找到该用户
 };
 
-export default RESULT_CODE;
+export default ERROR_CODE;

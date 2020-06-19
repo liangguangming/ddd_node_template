@@ -1,4 +1,4 @@
-import IDomainEvent from '../../../core/IDomainEvent';
+import IDomainEvent from '../../../../share/core/IDomainEvent';
 
 class CreateUserEvent extends IDomainEvent {
   constructor(data) {

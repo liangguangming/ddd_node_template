@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import UserMap from './userMap';
+import UserMap from '../mappers/userMap';
 
 const userSchema = new mongoose.Schema({ name: String, age: Number });
 const BaseUserModel = mongoose.model('user', userSchema);
@@ -16,7 +16,7 @@ class UserRepository {
   }
 
   static async getUserByName(name) {
-    const userDoc = BaseUserModel.findOne({ name });
+    const userDoc = await BaseUserModel.findOne({ name });
     const user = UserMap.getUser(userDoc);
     return user;
   }

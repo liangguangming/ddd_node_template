@@ -37,6 +37,18 @@ class MongoDB {
   static get STATE() {
     return mongo.STATES;
   }
+
+  /**
+   * 获取数据库健康状态
+   */
+  static getHealthInfo() {
+    const result = {
+      health: mongo.STATES === mongo.ConnectionStates.connected,
+      state: mongo.STATES,
+    };
+
+    return result;
+  }
 }
 
 export default MongoDB;
