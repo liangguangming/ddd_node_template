@@ -1,10 +1,10 @@
 import IDomainEvent from '../../../../share/core/IDomainEvent';
 
 class CreateUserEvent extends IDomainEvent {
-  constructor(data) {
+  constructor(user) {
     super();
     this.name = 'CREATE_USER';
-    this.data = data;
+    this.user = user;
   }
 }
 

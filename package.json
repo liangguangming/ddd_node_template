@@ -2,7 +2,7 @@
   "name": "koatest",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/app.js",
+  "main": "dist/bin/launch.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint-fix": "eslint --ext .js ./src --fix",
@@ -14,9 +14,12 @@
   "dependencies": {
     "ajv": "^6.12.2",
     "core-js": "^3.6.5",
+    "debug": "^4.1.1",
+    "dotenv": "^8.2.0",
     "koa": "^2.12.1",
     "koa-body": "^4.2.0",
     "koa-router": "^9.0.1",
+    "log4js": "^6.3.0",
     "mongoose": "^5.9.18"
   },
   "devDependencies": {

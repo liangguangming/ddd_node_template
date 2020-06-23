@@ -4,6 +4,9 @@ import mongoose from 'mongoose';
 import UserCreateError from '../../useCases/errors/UserCreateError';
 import CreateUserEvent from '../events/createUserEvent';
 import Entity from '../../../../share/core/Entity';
+import Logger from '../../../../share/utils/Logger';
+
+const userLogger = new Logger('user');
 
 class User extends Entity {
   /**
@@ -49,7 +52,7 @@ class User extends Entity {
   }
 
   static printEvent(event) {
-    console.log('触发事件: ', event);
+    userLogger.log(event);
   }
 
   /**
@@ -64,7 +67,7 @@ class User extends Entity {
     const finalId = id || User.createObjectId();
     const user = new User({ _id: finalId, ...props });
     if (!id) {
-      user.fireEvent(new CreateUserEvent(user.toValueObject()));
+      user.fireEvent(new CreateUserEvent(user));
     }
 
     return user;

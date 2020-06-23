@@ -11,19 +11,19 @@ class UserRepository {
    */
   static async getUserById(id) {
     const userDoc = await BaseUserModel.findById(id);
-    const user = UserMap.getUser(userDoc);
+    const user = UserMap.toDomain(userDoc);
     return user;
   }
 
   static async getUserByName(name) {
     const userDoc = await BaseUserModel.findOne({ name });
-    const user = UserMap.getUser(userDoc);
+    const user = UserMap.toDomain(userDoc);
     return user;
   }
 
   static async createUser(userProps) {
     const userDoc = await BaseUserModel.create(userProps);
-    const user = UserMap.getUser(userDoc);
+    const user = UserMap.toDomain(userDoc);
     return user;
   }
 }

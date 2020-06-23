@@ -2,6 +2,13 @@ import Koa from 'koa';
 import koaBody from 'koa-body';
 import router from './routers/router';
 import globalEventEmitter, { GLOBAL_EVENT } from '../share/core/GloabelEventEmitter';
+import Logger /* , { logger } */ from '../share/utils/Logger';
+import errorHandlers from './middlewares/error';
+import log from './middlewares/log';
+
+// const httpLogger4j = logger.getLogger();  // logger4j
+
+const httpLogger = new Logger('http');
 
 const app = new Koa();
 
@@ -21,27 +28,16 @@ class HTTPServer {
     state = 1;
     app.use(koaBody());
 
-    // logger
-    app.use(async (ctx, next) => {
-      await next();
-      const rt = ctx.response.get('X-Response-Time');
-      console.log(`${ctx.method} ${ctx.url} - ${rt}`);
-    });
+    app.use(errorHandlers);
 
-    // x-response-time
-    app.use(async (ctx, next) => {
-      const start = Date.now();
-      await next();
-      const ms = Date.now() - start;
-      ctx.set('X-Response-Time', `${ms}ms`);
-    });
+    // logger
+    app.use(log);
 
     app.use(router.routes());
     app.use(router.allowedMethods());
 
     app.listen(3000, () => {
       state = 2;
-      console.log('launch successful');
       globalEventEmitter.fireEvent({ name: GLOBAL_EVENT.HTTP_INITED });
     });
   }

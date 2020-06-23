@@ -8,6 +8,9 @@ import Validator from '../../../share/lib/Validator';
 import BaseError from '../../../share/errors/error';
 import UserNotFoundError from './errors/UserNotFoundError';
 import UserMap from '../mappers/userMap';
+import Logger from '../../../share/utils/Logger';
+
+const userLogger = new Logger('user');
 
 // 用例入口
 class UserController {
@@ -33,7 +36,8 @@ class UserController {
       if (error instanceof BaseError) {
         result = new Result(error, `获取用户 ${id} 信息失败`);
       } else {
-        console.error('server_error: \n', 'req: ', id, '\nerror: ', error);
+        userLogger.error('%o', error);
+        // TODO: 触发全局错误处理
         result = new Result(new ServerError(), '获取用户失败');
       }
     }

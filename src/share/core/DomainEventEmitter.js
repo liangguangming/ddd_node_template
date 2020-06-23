@@ -2,6 +2,9 @@
 import IDomainEvent from './IDomainEvent';
 // eslint-disable-next-line no-unused-vars
 import IDomainEventHandler from './IDomainEventHandler';
+import Logger from '../utils/Logger';
+
+const eventLogger = new Logger('event');
 
 class DomainEventEmitter {
   constructor() {
@@ -26,13 +29,18 @@ class DomainEventEmitter {
    * @param {IDomainEvent} event 事件
    */
   fireEvent(event) {
+    eventLogger.log({
+      msg: '触发事件',
+      event,
+    });
+
     if (!this.eventHandlerMap.has(event.name)) {
       return;
     }
 
     const handlers = this.eventHandlerMap.get(event.name);
     handlers.forEach((handler) => {
-      handler(event.data);
+      handler(event);
     });
   }
 
