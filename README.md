@@ -6,6 +6,7 @@
 - mongoose/mongodb
 - koa/koa-body/koa-session/koa-router
 - ajv 数据校验
+- debug  输出日志
 
 # DDD
 ## 语言选择

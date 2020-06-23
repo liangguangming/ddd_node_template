@@ -3,6 +3,7 @@ import Logger from '../../share/utils/Logger';
 const httpLogger = new Logger('http');
 
 export default async function log(ctx, next) {
+  httpLogger.log(`${ctx.method}  ${ctx.path}`);
   const start = Date.now();
   await next();
   const ms = Date.now() - start;
@@ -20,5 +21,5 @@ export default async function log(ctx, next) {
       body: ctx.body,
     },
   };
-  httpLogger.log(logMessage);
+  httpLogger.debug(logMessage);
 }

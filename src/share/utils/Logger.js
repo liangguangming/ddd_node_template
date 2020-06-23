@@ -21,10 +21,10 @@ export const logger = log4j.configure(LOG4J_CONF);
 
 class Logger {
   constructor(namespace) {
-    this.logDebugger = debug(`ddd-${namespace}:log`);
-    this.debugDebugger = debug(`ddd-${namespace}:debug`);
-    this.warnDebugger = debug(`ddd-${namespace}:warn`);
-    this.errorDebugger = debug(`ddd-${namespace}:error`);
+    this.logDebugger = debug(`ddd:${namespace}:log`);
+    this.debugDebugger = debug(`ddd:${namespace}:debug`);
+    this.warnDebugger = debug(`ddd:${namespace}:warn`);
+    this.errorDebugger = debug(`ddd:${namespace}:error`);
   }
 
   log(formatter, ...data) {
