@@ -11,19 +11,11 @@ const userLogger = new Logger('user');
 class User extends Entity {
   /**
    * 用户信息
-   * @param {{ _id: mongoose.Types.ObjectId, name: String, age?: Number }} props 用户信息
+   * @param {{ id: mongoose.Types.ObjectId, name: String, age?: Number }} props 用户信息
    */
   constructor(props) {
     super(props);
     this.initEvent();
-  }
-
-  get id() {
-    return this.props._id;
-  }
-
-  set id(val) {
-    this.props._id = val;
   }
 
   get name() {
@@ -57,16 +49,15 @@ class User extends Entity {
 
   /**
    * 用户信息
-   * @param {{ name: String, age?: Number }} props 用户信息
-   * @param { string } id 用户ID
+   * @param {{ name: String, age?: Number, id?: String | mongoose.Types.ObjectId }} props 用户信息
    */
-  static createUser(props = {}, id) {
+  static createUser(props = {}) {
     if (!props.name) {
       throw new UserCreateError('缺少名字: name');
     }
-    const finalId = id || User.createObjectId();
-    const user = new User({ _id: finalId, ...props });
-    if (!id) {
+    const finalId = props.id || User.createObjectId();
+    const user = new User({ id: finalId, ...props });
+    if (!props.id) {
       user.fireEvent(new CreateUserEvent(user));
     }
 

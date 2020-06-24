@@ -19,6 +19,6 @@ httpDebugger('http request');
 # 环境变量控制debug  * 为通配符  - 除掉的命名空间
 DEBUG=ddd:*,-ddd:*:debug  # 打开与关闭相应的命名空间，这里表示：打开所有ddd:开头的debugger,然后关闭ddd:开头且:debug结尾的debugger
 
-# 检测的对象深度
+# 打印对象深度
 DEBUG_DEPTH=5
 ```

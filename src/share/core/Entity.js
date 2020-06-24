@@ -5,15 +5,23 @@ const { default: DomainEventEmitter } = require('./DomainEventEmitter');
 class Entity extends DomainEventEmitter {
   /**
    * 实体信息
-   * @param {{ _id: mongoose.Types.ObjectId }} props 实体信息
+   * @param {{ id: mongoose.Types.ObjectId }} props 实体信息
    */
   constructor(props) {
     super();
     this.props = { ...props };
-    if (props._id instanceof String) {
+    if (props.id instanceof String) {
       const id = Entity.createObjectId(props._id);
-      this.props._id = id;
+      this.props.id = id;
     }
+  }
+
+  get id() {
+    return this.props.id;
+  }
+
+  set id(val) {
+    this.props.id = val;
   }
 
   static valid(id) {
@@ -38,7 +46,7 @@ class Entity extends DomainEventEmitter {
    */
   equal(entity) {
     // eslint-disable-next-line no-underscore-dangle
-    if (this._id === entity._id) {
+    if (this.id === entity.id) {
       return true;
     }
 

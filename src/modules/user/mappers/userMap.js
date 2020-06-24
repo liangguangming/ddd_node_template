@@ -7,11 +7,11 @@ class UserMap {
     }
     const userProps = {
       // eslint-disable-next-line no-underscore-dangle
-      _id: userDoc._id,
+      id: userDoc._id,
       name: userDoc.name,
       age: userDoc.age,
     };
-    const user = new User(userProps);
+    const user = User.createUser(userProps);
     return user;
   }
 
