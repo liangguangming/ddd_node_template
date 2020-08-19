@@ -41,7 +41,6 @@ class UserController {
         result = new Result(error, `获取用户 ${id} 信息失败`);
       } else {
         userLogger.error('%o', error);
-        // TODO: 触发全局错误处理
         result = new Result(new ServerError(), '获取用户失败');
       }
     }
@@ -73,7 +72,7 @@ class UserController {
       if (error instanceof BaseError) {
         result = new Result(error, '创建用户失败');
       } else {
-        console.error('server_error: \n', 'req: ', userProps, '\nerror: ', error);
+        userLogger('server_error: \n', 'req: ', userProps, '\nerror: ', error);
         result = new Result(new ServerError(), '创建用户失败');
       }
     }

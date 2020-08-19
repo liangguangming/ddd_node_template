@@ -22,6 +22,10 @@ class UserRepository extends AbstractUserRepository {
     return user;
   }
 
+  /**
+   * 创建用户
+   * @param {{ age: number, name: string }} userProps
+   */
   static async createUser(userProps) {
     const userDoc = await BaseUserModel.create(userProps);
     const user = UserMap.toDomain(userDoc);
