@@ -2,13 +2,7 @@ import Koa from 'koa';
 import koaBody from 'koa-body';
 import router from './routers/router';
 import globalEventEmitter, { GLOBAL_EVENT } from '../share/core/GloabelEventEmitter';
-// import Logger /* , { logger } */ from '../share/utils/Logger';
-import errorHandlers from './middlewares/error';
-import log from './middlewares/log';
-
-// const httpLogger4j = logger.getLogger();  // logger4j
-
-// const httpLogger = new Logger('http');
+import registerCustomMiddlewares from './middlewares';
 
 const app = new Koa();
 
@@ -28,10 +22,7 @@ class HTTPServer {
     state = 1;
     app.use(koaBody());
 
-    app.use(errorHandlers);
-
-    // logger
-    app.use(log);
+    registerCustomMiddlewares(app);
 
     app.use(router.routes());
     app.use(router.allowedMethods());
@@ -43,9 +34,9 @@ class HTTPServer {
   }
 
   /**
-   * 获取http服务器健康状态
+   * 获取http服务器状态
    */
-  static getHealthInfo() {
+  static getStatus() {
     const result = {
       health: HTTPServer.STATE === 2,
       state: HTTPServer.STATE,

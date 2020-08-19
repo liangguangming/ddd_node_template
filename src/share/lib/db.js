@@ -1,7 +1,10 @@
 import mongo from 'mongoose';
 import globalEventEmitter, { GLOBAL_EVENT } from '../core/GloabelEventEmitter';
+import Logger from '../utils/Logger';
 
-const MONGO_URI = 'mongodb://localhost/koaTest';
+const dbLogger = new Logger('db');
+
+const MONGO_URI = 'mongodb://192.168.200.179:27017/koaTest';
 
 const options = {
   useNewUrlParser: true,
@@ -15,18 +18,33 @@ const options = {
   },
 };
 
+/**
+ * 0 未初始化
+ * 1 初始化中
+ * 2 成功启动
+ */
+let mongodbState = 0;
+
 class MongoDB {
   static connect() {
     mongo.connect(MONGO_URI, options);
   }
 
   static initEvent() {
+    mongodbState = 1;
     mongo.connection.on('connected', async () => {
-      console.log('MoogoDB connect success');
+      mongodbState = 2;
+      dbLogger.log('MoogoDB connect success');
       globalEventEmitter.fireEvent({ name: GLOBAL_EVENT.MONGODB_INITED });
     });
-    mongo.connection.on('error', () => { console.error('MoogoDB connect fail'); });
-    mongo.connection.on('disconnected', () => { console.error('MoogoDB connect disconnected'); });
+    mongo.connection.on('error', () => {
+      mongodbState = 0;
+      dbLogger.error('MoogoDB connect fail');
+    });
+    mongo.connection.on('disconnected', () => {
+      mongodbState = 0;
+      dbLogger.error('MoogoDB connect disconnected');
+    });
   }
 
   static init() {
@@ -35,16 +53,16 @@ class MongoDB {
   }
 
   static get STATE() {
-    return mongo.STATES;
+    return mongodbState;
   }
 
   /**
-   * 获取数据库健康状态
+   * 获取数据库状态
    */
-  static getHealthInfo() {
+  static getStatus() {
     const result = {
-      health: mongo.STATES === mongo.ConnectionStates.connected,
-      state: mongo.STATES,
+      health: MongoDB.STATE === 2,
+      state: MongoDB.STATE,
     };
 
     return result;

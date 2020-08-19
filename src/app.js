@@ -11,7 +11,7 @@ let state = 0;
 
 let firstLaunch = true;
 
-class Application {
+export default class Application {
   static get firstLaunch() {
     return firstLaunch;
   }
@@ -64,17 +64,17 @@ class Application {
   }
 
   /**
-   * 获取应用的健康状态
+   * 获取应用的状态
    */
-  static getHealthInfo() {
-    const mongoDBHealthInfo = MongoDB.getHealthInfo();
-    const httpServerHealthInfo = HTTPServer.getHealthInfo();
+  static getStatus() {
+    const mongoDBStatus = MongoDB.getStatus();
+    const httpServerStatus = HTTPServer.getStatus();
     const result = {
-      health: mongoDBHealthInfo.health && httpServerHealthInfo.health && Application.state === 2,
+      health: mongoDBStatus.health && httpServerStatus.health && Application.state === 2,
       stateInfo: {
         state: Application.state,
-        mongoState: mongoDBHealthInfo.state,
-        httpServerState: httpServerHealthInfo.state,
+        mongoState: mongoDBStatus.state,
+        httpServerState: httpServerStatus.state,
       },
     };
 
