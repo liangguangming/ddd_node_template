@@ -1,5 +1,5 @@
 import User from '../domains/entities/user';
-import Result from '../domains/valueObjects/result';
+import Result from '../../../share/core/result';
 import UserParamError from './errors/UserParamError';
 import UserCreateError from './errors/UserCreateError';
 import ServerError from '../../../share/errors/ServerError';
