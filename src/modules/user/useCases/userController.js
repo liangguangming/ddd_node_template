@@ -1,4 +1,3 @@
-import UserRepository from '../repositories/user';
 import User from '../domains/entities/user';
 import Result from '../domains/valueObjects/result';
 import UserParamError from './errors/UserParamError';
@@ -13,12 +12,17 @@ import Logger from '../../../share/utils/Logger';
 const userLogger = new Logger('user');
 
 // 用例入口
+// 通过注入的方式：注入Repository 以及 Service,便于接入 mock 数据
 class UserController {
+  constructor(userRepository) {
+    this.userRepository = userRepository;
+  }
+
   /**
    * 查询某个用户
    * @param { String } 用户ID
    */
-  static async getUserById(id) {
+  async getUserById(id) {
     let result;
     try {
       if (!id) {
@@ -27,7 +31,7 @@ class UserController {
       if (!User.valid(id)) {
         throw new UserParamError('用户ID不对');
       }
-      const user = await UserRepository.getUserById(id);
+      const user = await this.userRepository.getUserById(id);
       if (!user) {
         throw new UserNotFoundError();
       }
@@ -48,7 +52,7 @@ class UserController {
    * 新增用户
    * @param {Object} userProps 用户信息
    */
-  static async createUser(userProps = {}) {
+  async createUser(userProps = {}) {
     let user;
     let result;
     try {
@@ -57,12 +61,12 @@ class UserController {
       };
       Validator.validateBySchema(validateSchema, userProps);
       // 判断用户是否存在{name来判断}
-      const existUser = await UserRepository.getUserByName(userProps.name);
+      const existUser = await this.userRepository.getUserByName(userProps.name);
       if (existUser) {
         throw new UserCreateError('用户名重复');
       }
       user = User.createUser(userProps);
-      user = await UserRepository.createUser(UserMap.toRepository(user));
+      user = await this.userRepository.createUser(UserMap.toRepository(user));
       result = new Result(null, '创建用户成功', UserMap.toDTO(user));
     } catch (error) {
       // 特定错误处理在BaseError之上处理

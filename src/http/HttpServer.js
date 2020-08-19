@@ -2,13 +2,13 @@ import Koa from 'koa';
 import koaBody from 'koa-body';
 import router from './routers/router';
 import globalEventEmitter, { GLOBAL_EVENT } from '../share/core/GloabelEventEmitter';
-import Logger /* , { logger } */ from '../share/utils/Logger';
+// import Logger /* , { logger } */ from '../share/utils/Logger';
 import errorHandlers from './middlewares/error';
 import log from './middlewares/log';
 
 // const httpLogger4j = logger.getLogger();  // logger4j
 
-const httpLogger = new Logger('http');
+// const httpLogger = new Logger('http');
 
 const app = new Koa();
 
