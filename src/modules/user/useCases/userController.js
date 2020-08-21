@@ -80,7 +80,7 @@ class UserController {
       if (error instanceof BaseError) {
         result = new Result(error, '创建用户失败');
       } else {
-        userLogger('server_error: \n', 'req: ', userProps, '\nerror: ', error);
+        userLogger.log('server_error: \n', 'req: ', userProps, '\nerror: ', error);
         result = new Result(new ServerError(), '创建用户失败');
       }
     }
