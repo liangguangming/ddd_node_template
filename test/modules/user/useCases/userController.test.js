@@ -11,7 +11,6 @@ const sinon = require('sinon');
 
 const { default: UserController } = require('../../../../src/modules/user/useCases/userController');
 const { default: UserParamError } = require('../../../../src/modules/user/useCases/errors/UserParamError');
-const { default: Result } = require('../../../../src/modules/user/domains/valueObjects/result');
 const { default: UserNotFoundError } = require('../../../../src/modules/user/useCases/errors/UserNotFoundError');
 const { default: ServerError } = require('../../../../src/share/errors/ServerError');
 const { default: User } = require('../../../../src/modules/user/domains/entities/user');
@@ -19,6 +18,7 @@ const { default: DataValidateError } = require('../../../../src/share/errors/Dat
 const { default: UserCreateError } = require('../../../../src/modules/user/useCases/errors/UserCreateError');
 const { default: UserMap } = require('../../../../src/modules/user/mappers/userMap');
 const { default: MockUserRepository } = require('./mocks/MockUserRepository');
+const { default: Result } = require('../../../../src/share/core/result');
 
 describe('User', () => {
   const userController = new UserController(MockUserRepository);
