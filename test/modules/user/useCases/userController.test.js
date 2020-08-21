@@ -21,7 +21,8 @@ const { default: MockUserRepository } = require('./mocks/MockUserRepository');
 const { default: Result } = require('../../../../src/share/core/result');
 
 describe('User', () => {
-  const userController = new UserController(MockUserRepository);
+  const mockUserRepository = new MockUserRepository();
+  const userController = new UserController(mockUserRepository);
   describe('getUserById', function getUserByIdTest() {
     const userId = mongoose.Types.ObjectId().toHexString();
     const noneExistUserId = mongoose.Types.ObjectId().toHexString();
@@ -34,7 +35,7 @@ describe('User', () => {
     };
 
     before((done) => {
-      const getUserByIdStub = sinon.stub(MockUserRepository, 'getUserById');
+      const getUserByIdStub = sinon.stub(mockUserRepository, 'getUserById');
       getUserByIdStub.withArgs(userId).resolves(getNormalUserByIdData);
       getUserByIdStub.withArgs(noneExistUserId).resolves(null);
       getUserByIdStub.withArgs(otherErrorId).throwsException('Mongodb');
@@ -94,11 +95,11 @@ describe('User', () => {
     };
 
     before(() => {
-      const getUserByNameStub = sinon.stub(MockUserRepository, 'getUserByName');
+      const getUserByNameStub = sinon.stub(mockUserRepository, 'getUserByName');
       getUserByNameStub.withArgs(normalUserProps.name).resolves(null);
       getUserByNameStub.withArgs(existUserProps.name).resolves(existUserProps);
 
-      const createUserStub = sinon.stub(MockUserRepository, 'createUser');
+      const createUserStub = sinon.stub(mockUserRepository, 'createUser');
       const user = User.createUser(normalUserProps);
       createUserStub.withArgs(UserMap.toRepository(user)).resolves(user);
     });

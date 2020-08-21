@@ -1,8 +1,11 @@
 import UserController from './useCases/userController';
 import UserRepository from './repositories/user';
 
+const userRepository = new UserRepository();
+const userController = new UserController(userRepository);
+
 export default {
-  user: new UserController(UserRepository),
+  user: userController,
 };
 
 // 启动用户域的服务

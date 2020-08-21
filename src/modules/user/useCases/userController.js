@@ -8,12 +8,18 @@ import BaseError from '../../../share/errors/error';
 import UserNotFoundError from './errors/UserNotFoundError';
 import UserMap from '../mappers/userMap';
 import Logger from '../../../share/utils/Logger';
+// eslint-disable-next-line no-unused-vars
+import AbstractUserRepository from '../repositories/userAbtractRepository';
 
 const userLogger = new Logger('user');
 
 // 用例入口
 // 通过注入的方式：注入Repository 以及 Service,便于接入 mock 数据
 class UserController {
+  /**
+   * 构造控制器
+   * @param { AbstractUserRepository } userRepository 用户仓库
+   */
   constructor(userRepository) {
     this.userRepository = userRepository;
   }
