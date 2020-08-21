@@ -19,6 +19,7 @@ const { default: UserCreateError } = require('../../../../src/modules/user/useCa
 const { default: UserMap } = require('../../../../src/modules/user/mappers/userMap');
 const { default: MockUserRepository } = require('./mocks/MockUserRepository');
 const { default: Result } = require('../../../../src/share/core/result');
+const { default: CreateUserDTO } = require('../../../../src/modules/user/useCases/dtos/createUserDTO');
 
 describe('User', () => {
   const mockUserRepository = new MockUserRepository();
@@ -105,20 +106,20 @@ describe('User', () => {
     });
 
     it('not UserName', async () => {
-      const result = await userController.createUser(noNameProps);
+      const result = await userController.createUser(new CreateUserDTO(noNameProps));
       const error = new DataValidateError('not Name', 'not Name');
       result.error.message = error.message;
       powerAssert.deepStrictEqual(result, new Result(error, '创建用户失败'));
     });
 
     it('exist User', async () => {
-      const result = await userController.createUser(existUserProps);
+      const result = await userController.createUser(new CreateUserDTO(existUserProps));
       const error = new UserCreateError('用户名重复');
       powerAssert.deepStrictEqual(result, new Result(error, '创建用户失败'));
     });
 
     it('normal create user', async () => {
-      const result = await userController.createUser(normalUserProps);
+      const result = await userController.createUser(new CreateUserDTO(normalUserProps));
       powerAssert.deepStrictEqual(result, new Result(null, '创建用户成功', UserMap.toDTO(User.createUser(normalUserProps))));
     });
   });

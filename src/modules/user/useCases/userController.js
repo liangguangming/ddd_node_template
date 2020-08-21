@@ -10,6 +10,8 @@ import UserMap from '../mappers/userMap';
 import Logger from '../../../share/utils/Logger';
 // eslint-disable-next-line no-unused-vars
 import AbstractUserRepository from '../repositories/userAbtractRepository';
+// eslint-disable-next-line no-unused-vars
+import CreateUserDTO from './dtos/createUserDTO';
 
 const userLogger = new Logger('user');
 
@@ -55,7 +57,7 @@ class UserController {
 
   /**
    * 新增用户
-   * @param {Object} userProps 用户信息
+   * @param {CreateUserDTO} userProps 用户信息
    */
   async createUser(userProps = {}) {
     let user;
